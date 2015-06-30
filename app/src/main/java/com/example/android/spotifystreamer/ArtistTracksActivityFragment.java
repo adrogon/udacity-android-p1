@@ -155,7 +155,6 @@ public class ArtistTracksActivityFragment extends Fragment {
                 }
             }
             parcelableTrack.previewUrl = track.preview_url;
-            Log.d(LOG_TAG, parcelableTrack.poster);
         }
 
         return parcelableTrack;
