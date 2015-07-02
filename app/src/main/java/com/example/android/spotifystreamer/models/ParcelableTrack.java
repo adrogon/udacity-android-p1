@@ -1,14 +1,14 @@
-package com.example.android.spotifystreamer;
+package com.example.android.spotifystreamer.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class ParcelableTrack implements Parcelable {
-    String id;
-    String title;
-    String album;
-    String poster;
-    String previewUrl;
+    public String id;
+    public String title;
+    public String album;
+    public String poster;
+    public String previewUrl;
 
     @Override
     public int describeContents() {
