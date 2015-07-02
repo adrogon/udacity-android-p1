@@ -26,21 +26,21 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MainActivityFragment extends Fragment {
-    private String LOG_TAG = MainActivityFragment.class.getSimpleName();
+public class ArtistSearchActivityFragment extends Fragment {
+    private String LOG_TAG = ArtistSearchActivityFragment.class.getSimpleName();
 
     // Minimum characters to perform a search
     private final static int SEARCH_MIN_CHARS = 3;
 
     private ArtistSearchAdapter artistSearchAdapter;
 
-    public MainActivityFragment() {
+    public ArtistSearchActivityFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_artist_search, container, false);
 
         artistSearchAdapter = new ArtistSearchAdapter(getActivity().getBaseContext(), new ArrayList<Artist>());
 
@@ -60,43 +60,43 @@ public class MainActivityFragment extends Fragment {
 
         SearchView searchView = (SearchView) rootView.findViewById(R.id.artist_search);
         searchView.setOnQueryTextListener(
-            new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    artistSearchAdapter.clear();
+                new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        artistSearchAdapter.clear();
 
-                    // If there are enough characters, perform a search
-                    if (query != null && query.length() >= SEARCH_MIN_CHARS) {
-                        SpotifyService spotifyService = new SpotifyApi().getService();
+                        // If there are enough characters, perform a search
+                        if (query != null && query.length() >= SEARCH_MIN_CHARS) {
+                            SpotifyService spotifyService = new SpotifyApi().getService();
 
-                        spotifyService.searchArtists(query, new Callback<ArtistsPager>() {
-                            @Override
-                            public void success(ArtistsPager artistsPager, Response response) {
-                                if (artistsPager == null || artistsPager.artists == null || artistsPager.artists.items == null || artistsPager.artists.items.isEmpty()) {
-                                    // No artists retrieved, show an alert
-                                    Toast.makeText(getActivity(), R.string.search_warn_empty, Toast.LENGTH_SHORT).show();
-                                } else {
-                                    artistSearchAdapter.addAll(artistsPager.artists.items);
+                            spotifyService.searchArtists(query, new Callback<ArtistsPager>() {
+                                @Override
+                                public void success(ArtistsPager artistsPager, Response response) {
+                                    if (artistsPager == null || artistsPager.artists == null || artistsPager.artists.items == null || artistsPager.artists.items.isEmpty()) {
+                                        // No artists retrieved, show an alert
+                                        Toast.makeText(getActivity(), R.string.search_warn_empty, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        artistSearchAdapter.addAll(artistsPager.artists.items);
+                                    }
+
+                                    Log.d(LOG_TAG, "Search artist success. ArtistSearchAdapter refreshed.");
                                 }
 
-                                Log.d(LOG_TAG, "Search artist success. ArtistSearchAdapter refreshed.");
-                            }
+                                @Override
+                                public void failure(RetrofitError error) {
+                                    Log.e(LOG_TAG, "Search artist failure:" + error.toString());
+                                }
+                            });
+                        }
 
-                            @Override
-                            public void failure(RetrofitError error) {
-                                Log.e(LOG_TAG, "Search artist failure:" + error.toString());
-                            }
-                        });
+                        return true;
                     }
 
-                    return true;
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        return false;
+                    }
                 }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    return false;
-                }
-            }
         );
 
         return rootView;
