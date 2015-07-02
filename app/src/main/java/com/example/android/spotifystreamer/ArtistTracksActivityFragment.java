@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.android.spotifystreamer.adapters.ArtistTrackAdapter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;

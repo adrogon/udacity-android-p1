@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.android.spotifystreamer.adapters.ArtistSearchAdapter;
+
 import java.util.ArrayList;
 
 import kaaes.spotify.webapi.android.SpotifyApi;

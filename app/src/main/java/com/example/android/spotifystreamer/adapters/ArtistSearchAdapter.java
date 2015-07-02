@@ -1,4 +1,4 @@
-package com.example.android.spotifystreamer;
+package com.example.android.spotifystreamer.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android.spotifystreamer.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
