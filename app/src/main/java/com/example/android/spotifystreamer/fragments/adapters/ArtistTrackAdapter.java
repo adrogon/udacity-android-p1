@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.android.spotifystreamer.ParcelableTrack;
+import com.example.android.spotifystreamer.models.ParcelableTrack;
 import com.example.android.spotifystreamer.R;
 import com.squareup.picasso.Picasso;
 

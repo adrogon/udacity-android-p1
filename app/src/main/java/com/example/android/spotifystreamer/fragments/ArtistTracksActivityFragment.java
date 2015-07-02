@@ -12,7 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.android.spotifystreamer.ParcelableTrack;
+import com.example.android.spotifystreamer.models.ParcelableTrack;
 import com.example.android.spotifystreamer.R;
 import com.example.android.spotifystreamer.fragments.adapters.ArtistTrackAdapter;
 
