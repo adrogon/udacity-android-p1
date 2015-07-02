@@ -27,24 +27,37 @@ public class ArtistSearchAdapter extends ArrayAdapter<Artist> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewHolder viewHolder;
 
-        View rowView = inflater.inflate(R.layout.artist_search_list_item, parent, false);
-
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.artist_search_list_item_poster);
-        TextView textView = (TextView) rowView.findViewById(R.id.artist_search_list_item_name);
-
-        Artist artist = artists.get(position);
-
-        textView.setText(artist.name);
-
-        // No instruction here, so just keep the first image if any
-        if (artist.images.isEmpty()) {
-            imageView.setImageResource(R.drawable.no_image);
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.artist_search_list_item, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.textView = (TextView) convertView.findViewById(R.id.artist_search_list_item_name);
+            viewHolder.imageView = (ImageView) convertView.findViewById(R.id.artist_search_list_item_poster);
+            convertView.setTag(viewHolder);
         } else {
-            Picasso.with(context).load(artist.images.get(0).url).into(imageView);
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        return rowView;
+        Artist artist = artists.get(position);
+        if (artist != null) {
+            viewHolder.textView.setText(artist.name);
+
+            // No instruction here, so just keep the first image if any
+            if (artist.images == null || artist.images.isEmpty() || artist.images.get(0) == null
+                    || artist.images.get(0).url == null || artist.images.get(0).url.isEmpty()) {
+                viewHolder.imageView.setImageResource(R.drawable.no_image);
+            } else {
+                Picasso.with(context).load(artist.images.get(0).url).into(viewHolder.imageView);
+            }
+        }
+
+        return convertView;
+    }
+
+    private class ViewHolder {
+        TextView textView;
+        ImageView imageView;
     }
 }

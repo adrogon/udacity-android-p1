@@ -26,25 +26,38 @@ public class ArtistTrackAdapter extends ArrayAdapter<ParcelableTrack> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewHolder viewHolder;
 
-        View rowView = inflater.inflate(R.layout.artist_track_list_item, parent, false);
-
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.artist_track_list_item_poster);
-        TextView titleTextView = (TextView) rowView.findViewById(R.id.artist_track_list_item_title);
-        TextView albumTextView = (TextView) rowView.findViewById(R.id.artist_track_list_item_album);
-
-        ParcelableTrack parcelableTrack = parcelableTracks.get(position);
-
-        titleTextView.setText(parcelableTrack.title);
-        albumTextView.setText(parcelableTrack.album);
-
-        if (parcelableTrack.poster == null) {
-            imageView.setImageResource(R.drawable.no_image);
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.artist_track_list_item, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.titleTextView = (TextView) convertView.findViewById(R.id.artist_track_list_item_title);
+            viewHolder.albumTextView = (TextView) convertView.findViewById(R.id.artist_track_list_item_album);
+            viewHolder.imageView = (ImageView) convertView.findViewById(R.id.artist_track_list_item_poster);
+            convertView.setTag(viewHolder);
         } else {
-            Picasso.with(context).load(parcelableTrack.poster).into(imageView);
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        return rowView;
+        ParcelableTrack parcelableTrack = parcelableTracks.get(position);
+        if (parcelableTrack != null) {
+            viewHolder.titleTextView.setText(parcelableTrack.title);
+            viewHolder.albumTextView.setText(parcelableTrack.album);
+
+            if (parcelableTrack.poster == null || parcelableTrack.poster.isEmpty()) {
+                viewHolder.imageView.setImageResource(R.drawable.no_image);
+            } else {
+                Picasso.with(context).load(parcelableTrack.poster).into(viewHolder.imageView);
+            }
+        }
+
+        return convertView;
+    }
+
+    private class ViewHolder {
+        TextView titleTextView;
+        TextView albumTextView;
+        ImageView imageView;
     }
 }
