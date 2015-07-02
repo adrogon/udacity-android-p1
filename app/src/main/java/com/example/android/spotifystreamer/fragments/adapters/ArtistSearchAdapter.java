@@ -1,4 +1,4 @@
-package com.example.android.spotifystreamer.adapters;
+package com.example.android.spotifystreamer.fragments.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

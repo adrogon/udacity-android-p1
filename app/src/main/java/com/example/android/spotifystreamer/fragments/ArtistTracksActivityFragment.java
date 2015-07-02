@@ -1,4 +1,4 @@
-package com.example.android.spotifystreamer;
+package com.example.android.spotifystreamer.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -12,7 +12,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.android.spotifystreamer.adapters.ArtistTrackAdapter;
+import com.example.android.spotifystreamer.ParcelableTrack;
+import com.example.android.spotifystreamer.R;
+import com.example.android.spotifystreamer.fragments.adapters.ArtistTrackAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
