@@ -5,4 +5,5 @@
     <string name="title_activity_artist_tracks">Top 10 Tracks</string>
     <string name="search_warn_empty">No artists found, please refine your search</string>
     <string name="tracks_warn_empty">No tracks found, please search for another artist</string>
+    <string name="connection_issue">Unknown network failure</string>
 </resources>
