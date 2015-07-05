@@ -31,8 +31,6 @@ import retrofit.client.Response;
 public class ArtistSearchActivityFragment extends Fragment {
     private String LOG_TAG = ArtistSearchActivityFragment.class.getSimpleName();
 
-    // Minimum characters to perform a search
-    private final static int SEARCH_MIN_CHARS = 3;
     private final String PARCELABLE_ARTISTS_KEY = "parcelableArtists";
 
     private ArtistSearchAdapter artistSearchAdapter;
@@ -82,8 +80,7 @@ public class ArtistSearchActivityFragment extends Fragment {
                     public boolean onQueryTextSubmit(String query) {
                         artistSearchAdapter.clear();
 
-                        // If there are enough characters, perform a search
-                        if (query != null && query.length() >= SEARCH_MIN_CHARS) {
+                        if (query != null && !query.isEmpty()) {
                             SpotifyService spotifyService = new SpotifyApi().getService();
 
                             spotifyService.searchArtists(query, new Callback<ArtistsPager>() {
