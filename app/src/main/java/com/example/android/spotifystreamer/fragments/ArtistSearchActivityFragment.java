@@ -106,6 +106,8 @@ public class ArtistSearchActivityFragment extends Fragment {
 
                                 @Override
                                 public void failure(RetrofitError error) {
+                                    // Unsuccessful HTTP response due to network failure, non-2XX status code, or unexpected exception.
+                                    Toast.makeText(getActivity(), R.string.connection_issue, Toast.LENGTH_SHORT).show();
                                     Log.e(LOG_TAG, "Search artist failure:" + error.toString());
                                 }
                             });
