@@ -9,20 +9,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.spotifystreamer.R;
+import com.example.android.spotifystreamer.models.ParcelableArtist;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import kaaes.spotify.webapi.android.models.Artist;
-
-public class ArtistSearchAdapter extends ArrayAdapter<Artist> {
+public class ArtistSearchAdapter extends ArrayAdapter<ParcelableArtist> {
     private Context context;
-    private List<Artist> artists;
+    private List<ParcelableArtist> parcelableArtists;
 
-    public ArtistSearchAdapter(Context context, List<Artist> artists) {
-        super(context, -1, artists);
+    public ArtistSearchAdapter(Context context, List<ParcelableArtist> parcelableArtists) {
+        super(context, -1, parcelableArtists);
         this.context = context;
-        this.artists = artists;
+        this.parcelableArtists = parcelableArtists;
     }
 
     @Override
@@ -40,16 +39,14 @@ public class ArtistSearchAdapter extends ArrayAdapter<Artist> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Artist artist = artists.get(position);
-        if (artist != null) {
-            viewHolder.textView.setText(artist.name);
+        ParcelableArtist parcelableArtist = parcelableArtists.get(position);
+        if (parcelableArtist != null) {
+            viewHolder.textView.setText(parcelableArtist.name);
 
-            // No instruction here, so just keep the first image if any
-            if (artist.images == null || artist.images.isEmpty() || artist.images.get(0) == null
-                    || artist.images.get(0).url == null || artist.images.get(0).url.isEmpty()) {
+            if (parcelableArtist.poster == null || parcelableArtist.poster.isEmpty()) {
                 viewHolder.imageView.setImageResource(R.drawable.no_image);
             } else {
-                Picasso.with(context).load(artist.images.get(0).url).into(viewHolder.imageView);
+                Picasso.with(context).load(parcelableArtist.poster).into(viewHolder.imageView);
             }
         }
 
