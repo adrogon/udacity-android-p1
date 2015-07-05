@@ -66,10 +66,10 @@ public class ArtistSearchActivityFragment extends Fragment {
         searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Click on an artist, send an intent with its id to retrieve its tracks
+                // Click on an artist, send an intent holding it to retrieve its tracks
                 ParcelableArtist parcelableArtist = (ParcelableArtist) parent.getItemAtPosition(position);
                 if (parcelableArtist != null && parcelableArtist.id != null) {
-                    Intent intent = new Intent(getActivity(), ArtistTracksActivity.class).putExtra(Intent.EXTRA_TEXT, parcelableArtist.id);
+                    Intent intent = new Intent(getActivity(), ArtistTracksActivity.class).putExtra("parcelableArtist", parcelableArtist);
                     startActivity(intent);
                 }
             }
