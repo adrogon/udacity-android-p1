@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.android.spotifystreamer.models.ParcelableArtist;
 import com.example.android.spotifystreamer.models.ParcelableTrack;
 import com.example.android.spotifystreamer.R;
 import com.example.android.spotifystreamer.fragments.adapters.ArtistTrackAdapter;
@@ -36,6 +38,7 @@ public class ArtistTracksActivityFragment extends Fragment {
     private final String SPOTIFY_API_COUNTRY_VALUE = "SE";
     private final String PARCELABLE_TRACKS_KEY = "parcelableTracks";
 
+    private ParcelableArtist artist;
     private ArtistTrackAdapter artistTrackAdapter;
     private ArrayList<ParcelableTrack> parcelableTracks;
 
@@ -46,19 +49,24 @@ public class ArtistTracksActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        artistTrackAdapter = new ArtistTrackAdapter(getActivity().getBaseContext(), new ArrayList<ParcelableTrack>());
 
-        if (savedInstanceState == null || !savedInstanceState.containsKey(PARCELABLE_TRACKS_KEY)) {
-            // If no bundle was saved, perform the request to the API to retrieve tracks
-            Intent intent = getActivity().getIntent();
-            String artistId = intent.getStringExtra(Intent.EXTRA_TEXT);
+        Intent intent = getActivity().getIntent();
+        artist = (ParcelableArtist) intent.getParcelableExtra("parcelableArtist");
 
-            if (artistId != null && !artistId.isEmpty()) {
+        if (artist != null && artist.id != null && !artist.id.isEmpty()) {
+            if (artist.name != null && !artist.name.isEmpty()) {
+                ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(artist.name);
+            }
+
+            artistTrackAdapter = new ArtistTrackAdapter(getActivity().getBaseContext(), new ArrayList<ParcelableTrack>());
+
+            if (savedInstanceState == null || !savedInstanceState.containsKey(PARCELABLE_TRACKS_KEY)) {
+                // If no bundle was saved, perform the request to the API to retrieve tracks
                 SpotifyService spotifyService = new SpotifyApi().getService();
 
                 Map<String, Object> map = new HashMap<>();
                 map.put(SPOTIFY_API_COUNTRY_KEY, SPOTIFY_API_COUNTRY_VALUE);
-                spotifyService.getArtistTopTrack(artistId, map, new Callback<Tracks>() {
+                spotifyService.getArtistTopTrack(artist.id, map, new Callback<Tracks>() {
                     @Override
                     public void success(Tracks tracks, Response response) {
                         if (tracks == null || tracks.tracks == null || tracks.tracks.isEmpty()) {
@@ -82,11 +90,11 @@ public class ArtistTracksActivityFragment extends Fragment {
                         Log.e(LOG_TAG, "Artist Top Tracks failure:" + error.toString());
                     }
                 });
+            } else {
+                // If a bundle was saved, load its tracks
+                parcelableTracks = savedInstanceState.getParcelableArrayList(PARCELABLE_TRACKS_KEY);
+                resetAdapter();
             }
-        } else {
-            // If a bundle was saved, load its tracks
-            parcelableTracks = savedInstanceState.getParcelableArrayList(PARCELABLE_TRACKS_KEY);
-            resetAdapter();
         }
     }
 
