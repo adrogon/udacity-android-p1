@@ -26,27 +26,42 @@ public class ArtistSearchAdapter extends ArrayAdapter<ParcelableArtist> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+        ViewHolder viewHolder = null;
 
         if (convertView == null) {
+
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.artist_search_list_item, parent, false);
-            viewHolder = new ViewHolder();
-            viewHolder.textView = (TextView) convertView.findViewById(R.id.artist_search_list_item_name);
-            viewHolder.imageView = (ImageView) convertView.findViewById(R.id.artist_search_list_item_poster);
-            convertView.setTag(viewHolder);
+
+            if (inflater != null) {
+
+                convertView = inflater.inflate(R.layout.artist_search_list_item, parent, false);
+
+                if (convertView != null) {
+                    viewHolder = new ViewHolder();
+
+                    viewHolder.textView = (TextView) convertView.findViewById(R.id.artist_search_list_item_name);
+                    viewHolder.imageView = (ImageView) convertView.findViewById(R.id.artist_search_list_item_poster);
+
+                    convertView.setTag(viewHolder);
+                }
+            }
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        ParcelableArtist parcelableArtist = parcelableArtists.get(position);
-        if (parcelableArtist != null) {
-            viewHolder.textView.setText(parcelableArtist.name);
+        if (viewHolder != null && viewHolder.textView != null && viewHolder.imageView != null) {
 
-            if (parcelableArtist.poster == null || parcelableArtist.poster.isEmpty()) {
-                viewHolder.imageView.setImageResource(R.drawable.no_image);
-            } else {
-                Picasso.with(context).load(parcelableArtist.poster).into(viewHolder.imageView);
+            ParcelableArtist parcelableArtist = parcelableArtists.get(position);
+
+            if (parcelableArtist != null) {
+
+                viewHolder.textView.setText(parcelableArtist.name);
+
+                if (parcelableArtist.poster == null || parcelableArtist.poster.isEmpty()) {
+                    viewHolder.imageView.setImageResource(R.drawable.no_image);
+                } else {
+                    Picasso.with(context).load(parcelableArtist.poster).into(viewHolder.imageView);
+                }
             }
         }
 
