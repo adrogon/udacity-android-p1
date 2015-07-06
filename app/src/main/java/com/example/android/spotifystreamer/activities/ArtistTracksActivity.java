@@ -7,7 +7,7 @@ import android.view.MenuItem;
 
 import com.example.android.spotifystreamer.R;
 
-
+@SuppressWarnings("deprecation")
 public class ArtistTracksActivity extends ActionBarActivity {
 
     @Override
