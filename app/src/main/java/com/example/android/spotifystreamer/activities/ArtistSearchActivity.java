@@ -7,7 +7,7 @@ import android.view.MenuItem;
 
 import com.example.android.spotifystreamer.R;
 
-
+@SuppressWarnings("deprecation")
 public class ArtistSearchActivity extends ActionBarActivity {
 
     @Override
@@ -16,11 +16,10 @@ public class ArtistSearchActivity extends ActionBarActivity {
         setContentView(R.layout.activity_artist_search);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_artist_search, menu);
         return true;
     }
 
