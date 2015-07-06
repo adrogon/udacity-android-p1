@@ -47,10 +47,7 @@ public class ArtistSearchActivityFragment extends Fragment {
         if (savedInstanceState != null && savedInstanceState.containsKey(PARCELABLE_ARTISTS_KEY)) {
             // If a bundle was saved, load its artists
             parcelableArtists = savedInstanceState.getParcelableArrayList(PARCELABLE_ARTISTS_KEY);
-            artistSearchAdapter.clear();
-            for (ParcelableArtist parcelableArtist : parcelableArtists) {
-                artistSearchAdapter.add(parcelableArtist);
-            }
+            resetAdapter();
         }
     }
 
@@ -96,9 +93,7 @@ public class ArtistSearchActivityFragment extends Fragment {
                                             parcelableArtists.add(mapSpotifyArtistToParceableArtist(artist));
                                         }
 
-                                        for (ParcelableArtist parcelableArtist : parcelableArtists) {
-                                            artistSearchAdapter.add(parcelableArtist);
-                                        }
+                                        resetAdapter();
                                     }
 
                                     Log.d(LOG_TAG, "Search artist success. ArtistSearchAdapter refreshed.");
@@ -131,6 +126,20 @@ public class ArtistSearchActivityFragment extends Fragment {
         // Saves the artists into a bundle
         outState.putParcelableArrayList(PARCELABLE_ARTISTS_KEY, parcelableArtists);
         super.onSaveInstanceState(outState);
+    }
+
+    /**
+     * Resets the artistTrackAdapter with parcelableTracks
+     */
+    private void resetAdapter() {
+        if (artistSearchAdapter != null) {
+            artistSearchAdapter.clear();
+            if (parcelableArtists != null && !parcelableArtists.isEmpty()) {
+                for (ParcelableArtist parcelableArtist : parcelableArtists) {
+                    artistSearchAdapter.add(parcelableArtist);
+                }
+            }
+        }
     }
 
     /**
