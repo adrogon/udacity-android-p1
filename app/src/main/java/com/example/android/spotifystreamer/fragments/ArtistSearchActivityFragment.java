@@ -150,10 +150,10 @@ public class ArtistSearchActivityFragment extends Fragment {
                             // No artists retrieved, show an alert
                             Toast.makeText(getActivity(), R.string.search_warn_empty, Toast.LENGTH_SHORT).show();
                         } else {
-                            parcelableArtists = new ArrayList<ParcelableArtist>();
+                            parcelableArtists = new ArrayList<>();
 
                             for (Artist artist : artistsPager.artists.items) {
-                                parcelableArtists.add(mapSpotifyArtistToParceableArtist(artist));
+                                parcelableArtists.add(mapSpotifyArtistToParcelableArtist(artist));
                             }
 
                             resetAdapter();
@@ -179,7 +179,7 @@ public class ArtistSearchActivityFragment extends Fragment {
      * @param artist    The Artist object coming from the Spotify API wrapper
      * @return          The ParcelableArtist mapped from the Artist
      */
-    private ParcelableArtist mapSpotifyArtistToParceableArtist(Artist artist) {
+    private ParcelableArtist mapSpotifyArtistToParcelableArtist(Artist artist) {
         ParcelableArtist parcelableArtist = null;
 
         if (artist != null) {
