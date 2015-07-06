@@ -135,9 +135,13 @@ public class ArtistTracksActivityFragment extends Fragment {
      * Resets the artistTrackAdapter with parcelableTracks
      */
     private void resetAdapter() {
-        artistTrackAdapter.clear();
-        for (ParcelableTrack parcelableTrack : parcelableTracks) {
-            artistTrackAdapter.add(parcelableTrack);
+        if (artistTrackAdapter != null) {
+            artistTrackAdapter.clear();
+            if (parcelableTracks != null && !parcelableTracks.isEmpty()) {
+                for (ParcelableTrack parcelableTrack : parcelableTracks) {
+                    artistTrackAdapter.add(parcelableTrack);
+                }
+            }
         }
     }
 
