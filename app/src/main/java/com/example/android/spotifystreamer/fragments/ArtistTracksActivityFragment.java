@@ -155,24 +155,28 @@ public class ArtistTracksActivityFragment extends Fragment {
 
         if (track != null) {
             parcelableTrack = new ParcelableTrack();
+
             parcelableTrack.id = track.id;
             parcelableTrack.title = track.name;
-            parcelableTrack.album = track.album.name;
-            if (!track.album.images.isEmpty()) {
-                for (Image image : track.album.images) {
-                    if (image != null && image.url != null && !image.url.isEmpty()) {
-                        // Keep the smallest image that's at least 200px large
-                        if (image.width < 200) {
-                            continue;
-                        }
-                        parcelableTrack.poster = image.url;
-                        if (image.width == 200) {
-                            break;
+            parcelableTrack.previewUrl = track.preview_url;
+
+            if (track.album != null) {
+                parcelableTrack.album = track.album.name;
+                if (track.album.images != null && !track.album.images.isEmpty()) {
+                    for (Image image : track.album.images) {
+                        if (image != null && image.url != null && !image.url.isEmpty()) {
+                            // Keep the smallest image that's at least 200px large
+                            if (image.width < 200) {
+                                continue;
+                            }
+                            parcelableTrack.poster = image.url;
+                            if (image.width == 200) {
+                                break;
+                            }
                         }
                     }
                 }
             }
-            parcelableTrack.previewUrl = track.preview_url;
         }
 
         return parcelableTrack;
