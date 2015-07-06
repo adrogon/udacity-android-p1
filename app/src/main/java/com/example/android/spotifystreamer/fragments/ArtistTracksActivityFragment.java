@@ -37,7 +37,6 @@ public class ArtistTracksActivityFragment extends Fragment {
 
     private final String PARCELABLE_TRACKS_KEY = "parcelableTracks";
 
-    private ParcelableArtist parcelableArtist;
     private ArtistTrackAdapter artistTrackAdapter;
     private ArrayList<ParcelableTrack> parcelableTracks;
 
@@ -50,29 +49,34 @@ public class ArtistTracksActivityFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         Intent intent = getActivity().getIntent();
-        parcelableArtist = (ParcelableArtist) intent.getParcelableExtra("parcelableArtist");
 
-        if (parcelableArtist != null && parcelableArtist.id != null && !parcelableArtist.id.isEmpty()) {
-            if (parcelableArtist.name != null && !parcelableArtist.name.isEmpty()) {
-                // Sets parcelableArtist.name as Activity's ActionBar's subtitle
-                ActionBarActivity actionBarActivity = (ActionBarActivity) getActivity();
-                if (actionBarActivity != null) {
-                    ActionBar actionBar = actionBarActivity.getSupportActionBar();
-                    if (actionBar != null) {
-                        actionBar.setSubtitle(parcelableArtist.name);
+        if (intent != null) {
+
+            ParcelableArtist parcelableArtist = intent.getParcelableExtra("parcelableArtist");
+
+            if (parcelableArtist != null && parcelableArtist.id != null && !parcelableArtist.id.isEmpty()) {
+                if (parcelableArtist.name != null && !parcelableArtist.name.isEmpty()) {
+                    // Sets parcelableArtist.name as Activity's ActionBar's subtitle
+                    //noinspection deprecation
+                    ActionBarActivity actionBarActivity = (ActionBarActivity) getActivity();
+                    if (actionBarActivity != null) {
+                        ActionBar actionBar = actionBarActivity.getSupportActionBar();
+                        if (actionBar != null) {
+                            actionBar.setSubtitle(parcelableArtist.name);
+                        }
                     }
                 }
-            }
 
-            artistTrackAdapter = new ArtistTrackAdapter(getActivity().getBaseContext(), new ArrayList<ParcelableTrack>());
+                artistTrackAdapter = new ArtistTrackAdapter(getActivity().getBaseContext(), new ArrayList<ParcelableTrack>());
 
-            if (savedInstanceState == null || !savedInstanceState.containsKey(PARCELABLE_TRACKS_KEY)) {
-                // If no bundle was saved, perform the request to the API to retrieve tracks
-                searchTracksInSpotifyAPI(parcelableArtist.id);
-            } else {
-                // If a bundle was saved, load its tracks
-                parcelableTracks = savedInstanceState.getParcelableArrayList(PARCELABLE_TRACKS_KEY);
-                resetAdapter();
+                if (savedInstanceState == null || !savedInstanceState.containsKey(PARCELABLE_TRACKS_KEY)) {
+                    // If no bundle was saved, perform the request to the API to retrieve tracks
+                    searchTracksInSpotifyAPI(parcelableArtist.id);
+                } else {
+                    // If a bundle was saved, load its tracks
+                    parcelableTracks = savedInstanceState.getParcelableArrayList(PARCELABLE_TRACKS_KEY);
+                    resetAdapter();
+                }
             }
         }
     }
@@ -135,6 +139,10 @@ public class ArtistTracksActivityFragment extends Fragment {
         }
     }
 
+    /**
+     * Performs a Spotify API request over /artists/:id/top-tracks and stores result into parcelableTracks
+     * @param artistId Artist ID to search tracks from
+     */
     private void searchTracksInSpotifyAPI(String artistId) {
         final String SPOTIFY_API_COUNTRY_KEY = "country";
         final String SPOTIFY_API_COUNTRY_VALUE = "SE";
@@ -151,10 +159,10 @@ public class ArtistTracksActivityFragment extends Fragment {
                         // No tracks retrieved, show an alert
                         Toast.makeText(getActivity(), R.string.tracks_warn_empty, Toast.LENGTH_SHORT).show();
                     } else {
-                        parcelableTracks = new ArrayList<ParcelableTrack>();
+                        parcelableTracks = new ArrayList<>();
 
                         for (Track track : tracks.tracks) {
-                            parcelableTracks.add(mapSpotifyTrackToParceableTrack(track));
+                            parcelableTracks.add(mapSpotifyTrackToParcelableTrack(track));
                         }
 
                         resetAdapter();
@@ -179,7 +187,7 @@ public class ArtistTracksActivityFragment extends Fragment {
      * @param track The Track object coming from the Spotify API wrapper
      * @return      The ParcelableTrack mapped from the Track
      */
-    private ParcelableTrack mapSpotifyTrackToParceableTrack(Track track) {
+    private ParcelableTrack mapSpotifyTrackToParcelableTrack(Track track) {
         ParcelableTrack parcelableTrack = null;
 
         if (track != null) {
